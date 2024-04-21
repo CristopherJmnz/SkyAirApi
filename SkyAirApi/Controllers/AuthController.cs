@@ -12,13 +12,13 @@ namespace SkyAirApi.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private SkyAirRepository repo;
+        private ISkyAirRepository repo;
         //CUANDO GENEREMOS EL TOKEN, DEBEMOS INTEGRAR
         //DENTRO DE DICHO TOKEN, ISSUER, AUDIENCE...
         //PARA QUE LO VALIDE CUANDO NOS LO ENVIEN.
         private HelperActionServicesOAuth helper;
 
-        public AuthController(SkyAirRepository repo
+        public AuthController(ISkyAirRepository repo
             , HelperActionServicesOAuth helper)
         {
             this.repo = repo;

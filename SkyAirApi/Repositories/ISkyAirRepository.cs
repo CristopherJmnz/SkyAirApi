@@ -91,7 +91,7 @@ namespace SkyAirApi.Repositories
 
         #region BILLETES
         Task<int> GetMaxBilleteIdAsync();
-        Task CreateBilleteAsync
+        Task <Billete> CreateBilleteAsync
             (int idVuelo, int equipajeMano, int equipajeCabina, string asiento,
             decimal precio, string nombre, string documento, string apellido,
             string email, string telefonoContacto, int idClase);
