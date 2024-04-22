@@ -63,14 +63,12 @@ namespace SkyAirApi.Controllers
                 .FindVueloViewByIdAsync(idVuelo);
         }
 
-        [HttpGet("[action]/{origen}/{destino}/" +
-            "{fechaIda}/{kids}/{adultos}")]
+        [HttpPost("[action]")]
         public async Task<ActionResult<List<VueloView>>>
-            SearchVuelo(string origen, string destino,
-            DateTime fechaIda, int kids, int adultos)
+            SearchVuelo(ModelSearchVuelo model)
         {
             List<VueloView> vuelos = await this.repo.SearchVueloAsync
-                (origen, destino, fechaIda, kids, adultos);
+                (model.Origen, model.Destino, model.FechaIda, model.Kids, model.Adultos);
             return vuelos;
         }
 

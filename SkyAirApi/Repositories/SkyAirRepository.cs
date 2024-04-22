@@ -371,6 +371,16 @@ namespace SkyAirApi.Repositories
                 && x.Password == password);
         }
 
+        public async Task<List<BilleteVueloView>> GetBilletesViewById(List<int> idBilletes)
+        {
+            List<BilleteVueloView> billetes = new List<BilleteVueloView>();
+            foreach (int id in idBilletes)
+            {
+                billetes.Add(await this.FindBilleteViewByIdAsync(id));
+            }
+            return billetes;
+        }
+
         #endregion
     }
 }

@@ -23,12 +23,10 @@ namespace SkyAirApi.Controllers
             this.helper = helper;
         }
 
-        [Authorize]
         [HttpPost("[action]")]
-        public async Task<ActionResult<LoginModel>>PerfilUsuario()
+        public async Task<ActionResult<Usuario>>LogIn(LoginModel model)
         {
-
-            return null;
+            return await this.repo.LogInAsync(model.UserName,model.Password);
         }
     }
 }

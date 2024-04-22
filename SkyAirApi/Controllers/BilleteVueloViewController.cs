@@ -30,12 +30,19 @@ namespace SkyAirApi.Controllers
         [HttpGet("[action]/{idVuelo}")]
         public async Task<ActionResult<BilleteVueloView>>
             FindBilleteView
-            (int idVuelo)
+            (int idBillete)
         {
             BilleteVueloView billete = await this.repo
-                .FindBilleteViewByIdAsync(idVuelo);
+                .FindBilleteViewByIdAsync(idBillete);
 
             return billete == null ? NotFound() : billete;
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<List<BilleteVueloView>>> 
+            GetBilletesViewById([FromQuery]List<int>idBillete)
+        {
+            return await this.repo.GetBilletesViewById(idBillete);
         }
     }
 }

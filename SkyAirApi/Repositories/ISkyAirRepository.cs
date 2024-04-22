@@ -102,6 +102,7 @@ namespace SkyAirApi.Repositories
         #region BilleteVueloView
         Task<BilleteVueloView> FindBilleteViewByApellidoAndIdVueloAsync(string codVuelo, string apellido);
         Task<BilleteVueloView> FindBilleteViewByIdAsync(int idBillete);
+        Task<List<BilleteVueloView>> GetBilletesViewById(List<int> idBilletes); 
         #endregion
 
         #region USUARIOS

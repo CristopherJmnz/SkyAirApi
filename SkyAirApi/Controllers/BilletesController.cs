@@ -16,7 +16,7 @@ namespace SkyAirApi.Controllers
             this.repo = repo;
         }
 
-        [Authorize]
+        
         [HttpPost("[action]")]
         public async Task<ActionResult> CreateBillete(Billete billete)
         {
