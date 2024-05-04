@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
 
 namespace SkyAirApi.Helpers
 {
@@ -13,12 +15,25 @@ namespace SkyAirApi.Helpers
 
         public HelperActionServicesOAuth(IConfiguration configuration)
         {
-            this.Issuer =
-                configuration.GetValue<string>("ApiOAuth:Issuer");
-            this.Audience =
-                configuration.GetValue<string>("ApiOAuth:Audience");
-            this.SecretKey =
-                configuration.GetValue<string>("ApiOAuth:SecretKey");
+            var keyVaultUri = configuration.GetSection("KeyVault:VaultUri").Value;
+            var secretClient = new SecretClient(new Uri(keyVaultUri), new DefaultAzureCredential());
+            this.Issuer = GetSecretValue(secretClient, "Issuer");
+            this.Audience = GetSecretValue(secretClient, "Audience");
+            this.SecretKey = GetSecretValue(secretClient, "SecretKey");
+        }
+
+        private string GetSecretValue(SecretClient secretClient, string secretName)
+        {
+            try
+            {
+                KeyVaultSecret secret = secretClient.GetSecret(secretName);
+                return secret.Value;
+            }
+            catch (Exception ex)
+            {
+                // Maneja la excepción según sea necesario
+                throw new Exception($"No se pudo obtener el secreto '{secretName}' del Key Vault.", ex);
+            }
         }
 
         //NECESITAMOS UN METODO PARA GENERAR EL TOKEN 

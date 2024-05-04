@@ -1,13 +1,28 @@
+using Azure.Security.KeyVault.Secrets;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Azure;
 using Microsoft.OpenApi.Models;
 using SkyAirApi.Data;
 using SkyAirApi.Helpers;
 using SkyAirApi.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
+#region config keyvault
+builder.Services.AddAzureClients(factory =>
+{
+    factory.AddSecretClient
+    (builder.Configuration.GetSection("KeyVault"));
+});
+SecretClient secretClient =
+builder.Services.BuildServiceProvider().GetService<SecretClient>();
+KeyVaultSecret secretConnectionString =
+    await secretClient.GetSecretAsync("SqlAzure");
+#endregion
+
+
+string connectionString = secretConnectionString.Value;
+
 builder.Services.AddTransient<ISkyAirRepository, SkyAirRepository>();
-string connectionString =
-    builder.Configuration.GetConnectionString("SkyAirAzure");
 builder.Services.AddDbContext<SkyAirContext>
     (options => options.UseSqlServer(connectionString));
 
