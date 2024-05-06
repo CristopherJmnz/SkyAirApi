@@ -13,28 +13,28 @@ namespace SkyAirApi.Helpers
         public string Audience { get; set; }
         public string SecretKey { get; set; }
 
-        public HelperActionServicesOAuth(IConfiguration configuration)
+        public HelperActionServicesOAuth(IServiceCollection services)
         {
-            var keyVaultUri = configuration.GetSection("KeyVault:VaultUri").Value;
-            var secretClient = new SecretClient(new Uri(keyVaultUri), new DefaultAzureCredential());
-            this.Issuer = GetSecretValue(secretClient, "Issuer");
-            this.Audience = GetSecretValue(secretClient, "Audience");
-            this.SecretKey = GetSecretValue(secretClient, "SecretKey");
+            Task.Run(async () =>
+            {
+                SecretClient secretClient =
+                    services.BuildServiceProvider().GetService<SecretClient>();
+                KeyVaultSecret secretIssuer =
+                    await secretClient.GetSecretAsync("Issuer");
+                KeyVaultSecret secretAudience =
+                    await secretClient.GetSecretAsync("Audience");
+                KeyVaultSecret secretSecretKey =
+                    await secretClient.GetSecretAsync("SecretKey");
+                this.Issuer =
+                    secretIssuer.Value;
+                this.Audience =
+                    secretAudience.Value;
+                this.SecretKey =
+                    secretSecretKey.Value;
+            });
+
         }
 
-        private string GetSecretValue(SecretClient secretClient, string secretName)
-        {
-            try
-            {
-                KeyVaultSecret secret = secretClient.GetSecret(secretName);
-                return secret.Value;
-            }
-            catch (Exception ex)
-            {
-                // Maneja la excepción según sea necesario
-                throw new Exception($"No se pudo obtener el secreto '{secretName}' del Key Vault.", ex);
-            }
-        }
 
         //NECESITAMOS UN METODO PARA GENERAR EL TOKEN 
         //QUE SE BASA EN EL SECRET KEY

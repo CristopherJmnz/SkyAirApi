@@ -52,6 +52,8 @@ namespace SkyAirApi.Repositories
         Task<Ciudad> FindCiudadByIdAsync(int idCiudad);
         Task<List<Ciudad>> GetAllCiudadesAsync();
 
+        Task<List<string>> GetCiudadesMasVisitadas();
+
         #endregion
 
         #region AVIONES

@@ -26,7 +26,7 @@ builder.Services.AddTransient<ISkyAirRepository, SkyAirRepository>();
 builder.Services.AddDbContext<SkyAirContext>
     (options => options.UseSqlServer(connectionString));
 
-HelperActionServicesOAuth helper = new HelperActionServicesOAuth(builder.Configuration);
+HelperActionServicesOAuth helper = new HelperActionServicesOAuth(builder.Services);
 builder.Services.AddSingleton<HelperActionServicesOAuth>(helper);
 
 builder.Services.AddAuthentication

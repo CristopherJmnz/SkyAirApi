@@ -98,6 +98,16 @@ namespace SkyAirApi.Repositories
                 .FirstOrDefaultAsync(x => x.IdCiudad == idCiudad);
         }
 
+        public async Task<List<string>> GetCiudadesMasVisitadas()
+        {
+            var consulta = (from billete in this.context.BilletesView
+                            group billete by billete.CiudadDestino into g
+                            orderby g.Count() descending
+                            select g.Key).Take(5);
+
+            return await consulta.ToListAsync(); 
+        }
+
         #endregion
 
         #region AVIONES

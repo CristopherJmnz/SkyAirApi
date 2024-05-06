@@ -30,5 +30,11 @@ namespace SkyAirApi.Controllers
         {
             return await this.repo.GetAllCiudadesAsync();
         }
+        [HttpGet("[action]")]
+        public async Task<ActionResult<List<string>>>
+            GetCiudadesMasVisitadas()
+        {
+            return await this.repo.GetCiudadesMasVisitadas();
+        }
     }
 }
